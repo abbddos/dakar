@@ -26,57 +26,22 @@ class DakarRallySimulator:
         sensor_noise = 0.05  # Standard deviation for sensor noise
 
         vehicle_data = {
-            "engine_rpm": [
-                    random.uniform(engine_rpm_range[0], engine_rpm_range[1]) + random.gauss(0, sensor_noise) for _ in range(3)
-                ],
-                "engine_temp": [
-                    random.uniform(engine_temp_range[0], engine_temp_range[1]) + random.gauss(0, sensor_noise) for _ in range(3)
-                ],
-                "fuel_level": [
-                    random.uniform(fuel_level_range[0], fuel_level_range[1]) + random.gauss(0, sensor_noise) for _ in range(3)
-                ],
-                "oil_pressure": [
-                    random.uniform(oil_pressure_range[0], oil_pressure_range[1]) + random.gauss(0, sensor_noise) for _ in range(3)
-                ],
-                "tire_pressure": {
-                    "FR":[
-                        random.uniform(tire_pressure_range[0], tire_pressure_range[1]) + random.gauss(0, sensor_noise) 
-                        for _ in range(3)
-                        ],
-                    "FL": [
-                        random.uniform(tire_pressure_range[0], tire_pressure_range[1]) + random.gauss(0, sensor_noise) 
-                        for _ in range(3)
-                        ],
-                    "RR": [
-                        random.uniform(tire_pressure_range[0], tire_pressure_range[1]) + random.gauss(0, sensor_noise) 
-                        for _ in range(3)
-                        ],
-                    "RL":[
-                        random.uniform(tire_pressure_range[0], tire_pressure_range[1]) + random.gauss(0, sensor_noise) 
-                        for _ in range(3)
-                        ]
+            "engine_rpm": [random.uniform(engine_rpm_range[0], engine_rpm_range[1]) + random.gauss(0, sensor_noise) for _ in range(3)],
+            "engine_temp": [random.uniform(engine_temp_range[0], engine_temp_range[1]) + random.gauss(0, sensor_noise) for _ in range(3)],
+            "fuel_level": [random.uniform(fuel_level_range[0], fuel_level_range[1]) + random.gauss(0, sensor_noise) for _ in range(3)],
+            "oil_pressure": [random.uniform(oil_pressure_range[0], oil_pressure_range[1]) + random.gauss(0, sensor_noise) for _ in range(3)],
+            "tire_pressure": {
+                "FR": [random.uniform(tire_pressure_range[0], tire_pressure_range[1]) + random.gauss(0, sensor_noise) for _ in range(3)],
+                "FL": [random.uniform(tire_pressure_range[0], tire_pressure_range[1]) + random.gauss(0, sensor_noise) for _ in range(3)],
+                "RR": [random.uniform(tire_pressure_range[0], tire_pressure_range[1]) + random.gauss(0, sensor_noise) for _ in range(3)],
+                "RL": [random.uniform(tire_pressure_range[0], tire_pressure_range[1]) + random.gauss(0, sensor_noise) for _ in range(3)]
                 },
-                "transmission_temp": [
-                    random.uniform(transmission_temp_range[0], transmission_temp_range[1]) + random.gauss(0, sensor_noise) 
-                    for _ in range(3)
-                ],
-                "suspension_travel": {
-                    "FR":[
-                        random.uniform(suspension_travel_range[0], suspension_travel_range[1]) + random.gauss(0, sensor_noise) 
-                        for _ in range(3)
-                    ],
-                    "FL": [
-                        random.uniform(suspension_travel_range[0], suspension_travel_range[1]) + random.gauss(0, sensor_noise) 
-                        for _ in range(3)
-                    ],
-                    "RR": [
-                        random.uniform(suspension_travel_range[0], suspension_travel_range[1]) + random.gauss(0, sensor_noise) 
-                        for _ in range(3)
-                    ],
-                    "RL": [
-                        random.uniform(suspension_travel_range[0], suspension_travel_range[1]) + random.gauss(0, sensor_noise) 
-                        for _ in range(3)
-                    ]
+            "transmission_temp": [random.uniform(transmission_temp_range[0], transmission_temp_range[1]) + random.gauss(0, sensor_noise) for _ in range(3)],
+            "suspension_travel": {
+                "FR": [random.uniform(suspension_travel_range[0], suspension_travel_range[1]) + random.gauss(0, sensor_noise) for _ in range(3)],
+                "FL": [random.uniform(suspension_travel_range[0], suspension_travel_range[1]) + random.gauss(0, sensor_noise) for _ in range(3)],
+                "RR": [random.uniform(suspension_travel_range[0], suspension_travel_range[1]) + random.gauss(0, sensor_noise) for _ in range(3)],
+                "RL": [random.uniform(suspension_travel_range[0], suspension_travel_range[1]) + random.gauss(0, sensor_noise) for _ in range(3)]
                 }
             }
 
@@ -135,15 +100,9 @@ class DakarRallySimulator:
         sensor_noise = 0.5  # Standard deviation for sensor noise
 
         data = {
-            "external_temp": [
-                random.uniform(temp_range[0], temp_range[1]) + random.gauss(0, sensor_noise) for _ in range(3)
-            ],
-            "barometric_pressure": [
-                random.uniform(pressure_range[0], pressure_range[1]) + random.gauss(0, sensor_noise) for _ in range(3)
-            ],
-            "humidity": [
-                random.uniform(humidity_range[0], humidity_range[1]) + random.gauss(0, sensor_noise) for _ in range(3)
-            ],
+            "external_temp": [random.uniform(temp_range[0], temp_range[1]) + random.gauss(0, sensor_noise) for _ in range(3)],
+            "barometric_pressure": [random.uniform(pressure_range[0], pressure_range[1]) + random.gauss(0, sensor_noise) for _ in range(3)],
+            "humidity": [ random.uniform(humidity_range[0], humidity_range[1]) + random.gauss(0, sensor_noise) for _ in range(3)],
         }
 
         return data
