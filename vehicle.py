@@ -131,16 +131,3 @@ class DakarRallySimulator:
 
         return data
 
-# This is to be removed when creating the data stream...
-if __name__ == '__main__':
-    try:
-        while True:
-            vehicle = DakarRallySimulator()
-            data = {'vehicle performance': vehicle.simulate_vehicle_performance(),
-                    'location':vehicle.simulate_gps_data(),
-                    'weather': vehicle.simulate_environmental_data(),
-                    'crew health': vehicle.simulate_crew_vitals()}
-            print(data)
-            time.sleep(0.5)
-    except KeyboardInterrupt:
-            print('Terminated by keyboard interruption...')
