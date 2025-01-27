@@ -15,7 +15,7 @@ def run_simulation(dt):
                     'location':vh.simulate_gps_data(),
                     'weather': vh.simulate_environmental_data(),
                     'crew health': vh.simulate_crew_vitals(),
-                    'time stamp': time.time()
+                    'time stamp': time.ctime()
                     }
 
             try:

@@ -1,6 +1,7 @@
 from confluent_kafka import Consumer 
 import json
 
+
 def consume_rally_data(topic, batch_size):
     conf = {
         'bootstrap.servers':'localhost:9092',
@@ -11,32 +12,36 @@ def consume_rally_data(topic, batch_size):
     consumer = Consumer(conf)
     consumer.subscribe([topic])
     buffer = []
+
    
-    try:
-        while True: 
+    for _ in range(batch_size):
+        msg = consumer.poll(1.0)
+        if msg is None: 
+            continue 
+        if msg.error():
+            print(f'Consumer Error: {msg.error()}')
+            continue
 
-            msg = consumer.poll(1.0)
+        data = json.loads(msg.value().decode('utf-8'))
+        buffer.append(data)
 
-            if msg is None: 
-                continue 
-            if msg.error():
-                print(f'Consumer Error: {msg.error()}')
-                continue
+        if len(buffer) == batch_size:
+            global return_data
+            return_data = json.dumps(buffer)
+            buffer.clear()
 
-            data = json.loads(msg.value().decode('utf-8'))
-            buffer.append(data)
+    consumer.close()
+    return return_data
 
-            if len(buffer) == batch_size:
-                print(buffer)
-                print("-" * 20)
-                buffer.clear()
 
-    except KeyboardInterrupt:
-        print('Terminated by keyboard interruption...') 
-
-    finally:
-        consumer.close()
 
 
 if __name__ == "__main__":
-    consume_rally_data('dakar_rally_sim', 3)
+
+    try:
+        while True:
+            message = consume_rally_data('dakar_rally_sim', 5)
+            print(message)
+            print('-'*20)
+    except KeyboardInterrupt:
+        print('Terminated by keyboard interruption... ')
