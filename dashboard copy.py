@@ -1,7 +1,15 @@
+import dash 
+from dash.dependencies import Output, Input 
+import dash_core_components as dcc
+import dash_html_components as html
+import plotly 
+import random 
+import plotly.graph_objects as go 
+from collections import deque
 from confluent_kafka import Consumer 
 import json
 import numpy as np 
-import pandas as pd
+import pandas as pd 
 
 def consume_rally_data(topic, batch_size):
     conf = {
@@ -13,7 +21,6 @@ def consume_rally_data(topic, batch_size):
     consumer = Consumer(conf)
     consumer.subscribe([topic])
     buffer = []
-
     return_data = []
 
    
@@ -36,13 +43,8 @@ def consume_rally_data(topic, batch_size):
     consumer.close()
     return json.dumps(return_data)
 
-
-
 def get_mean(x):
     return np.array(x).mean()
-
-
-
 
 def Rally_Data_Analysis(data_queue):
     data = json.loads(data_queue)
@@ -75,20 +77,46 @@ def Rally_Data_Analysis(data_queue):
     df2['location.gps_coordinates'] = df1.iloc[-1]['location.gps_coordinates'][2]
     df2['time stamp'] = df1.iloc[-1]['time stamp']
 
-    return df2 
+    return df2.to_json()
 
+X = []
+Y = [] 
+
+app = dash.Dash(__name__)
+
+app.layout = html.Div([
+    html.H1('ENGINE RPM'),
+    dcc.Graph(id = 'live-graph', animate = True),
+    dcc.Interval(id = 'graph-update', interval = 1000, n_intervals = 0)
+])
+
+@app.callback(
+    Output('live-graph', 'figure'),
+    Input('graph-update','n_intervals')
+)
+def update_graph_scatter(n):
+    data_queue = consume_rally_data('dakar_rally_sim', 5)
+    data = Rally_Data_Analysis(data_queue)
+    data = json.loads(data)
+    X.append(data['time stamp'])
+    Y.append(data['vehicle performance.engine_rpm'])
+
+    data = plotly.graph_objs.Scatter(
+            x=list(X),
+            y=list(Y),
+            name='Scatter',
+            mode= 'lines+markers'
+    )
+
+    return {'data': [data],
+            'layout' : go.Layout(
+                xaxis = dict(range=[min(X),max(X)]),
+                yaxis = dict(range = [1000,8000])
+                )
+            }
 
 if __name__ == '__main__':
+    app.run_server()
 
-    batch = int(input('Enter the desired batch size:    '))
-    try:
-        while True:
-            data_queue = consume_rally_data('dakar_rally_sim', batch)
-            data = Rally_Data_Analysis(data_queue)
-            print(data)
-            print('-'*20)
-    
-    except KeyboardInterrupt:
-        print('Terminated by keyboard interruption...')
 
 
