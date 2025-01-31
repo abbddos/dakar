@@ -1,0 +1,27 @@
+body {
+    font-family: sans-serif;
+    background-color: rgba(26, 25, 34, 0.1); /* Light gray background */
+}
+
+h1 {
+    color: #343a40; /* Dark gray heading */
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.container {  /* Example class for a div */
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+}
+
+#live-graph {
+    width: 90%;
+    margin: 20px auto;
+}
+
+/* Target specific traces or elements in the graph */
+.scatter-trace {
+    opacity: 0.8;
+}

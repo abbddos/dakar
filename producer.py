@@ -34,7 +34,7 @@ def run_simulation(dt):
 
 
 if __name__ == "__main__":
-    dt = 0.5
+    dt = 0.1
     print('producing...')
     run_simulation(dt)
 
