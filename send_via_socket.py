@@ -2,6 +2,8 @@ from confluent_kafka import Consumer
 import json
 import numpy as np 
 import pandas as pd
+import time 
+import socket
 
 def consume_rally_data(topic, batch_size):
     conf = {
@@ -75,20 +77,48 @@ def Rally_Data_Analysis(data_queue):
     df2['location.gps_coordinates'] = df1.iloc[-1]['location.gps_coordinates'][2]
     df2['time stamp'] = df1.iloc[-1]['time stamp']
 
-    return df2 
+    return df2.to_json() 
 
 
-if __name__ == '__main__':
+import socket
+import time
 
-    batch = int(input('Enter the desired batch size:    '))
+def broadcast_data():
     try:
-        while True:
-            data_queue = consume_rally_data('dakar_rally_sim', batch)
-            data = Rally_Data_Analysis(data_queue)
-            print(data)
-            print('-'*20)
-    
+        client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        client_socket.bind(('localhost', 5000))
+        client_socket.listen(5)
+
+        while True:  # Keep the server running
+            print("Waiting for client...")
+            conn, addr = client_socket.accept()
+            print('Connected by', addr)
+
+            try:
+                while True:  # Keep sending data to the connected client
+                    data_queue = consume_rally_data('dakar_rally_sim', 5)
+                    agg_data = Rally_Data_Analysis(data_queue)
+
+                    conn.sendall(bytes(str(agg_data), encoding="utf-8"))
+                    time.sleep(1)
+
+            except BrokenPipeError:
+                print("Client disconnected.")
+                break  # Back to accepting new connections
+            except Exception as e:  # Catch other potential errors
+                print(f"An error occurred: {e}")
+                break
+            finally:
+                conn.close()  # Close the *client* connection
+
     except KeyboardInterrupt:
-        print('Terminated by keyboard interruption...')
+        print("Terminated by Keyboard Interruption...")
+    finally:
+        client_socket.close()
+
+if __name__ == "__main__":
+    broadcast_data()
 
 
+        
+    

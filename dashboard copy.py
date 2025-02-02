@@ -94,7 +94,7 @@ TFR = []
 TRL = []
 TRR = [] 
 
-app = Dash(__name__, external_stylesheets='style.css')
+app = Dash(__name__, external_stylesheets=['style.css'])
 
 app.layout = html.Div(className = "container", children = [
     html.H1('ENGINE PERFORMANCE'),
